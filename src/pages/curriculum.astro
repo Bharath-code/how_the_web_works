@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { SECTION_METADATA } from "../consts";
+
+const concepts = await getCollection("concepts", ({ slug }) => {
+    return !slug.startsWith("_");
+});
+
+// Group concepts by category
+const groupedConcepts = concepts.reduce(
+    (acc, concept) => {
+        const category = concept.data.category || "Uncategorized";
+        if (!acc[category]) {
+            acc[category] = [];
+        }
+        acc[category].push(concept);
+        return acc;
+    },
+    {} as Record<string, typeof concepts>,
+);
+
+// Sort categories based on metadata order
+const sortedCategories = Object.keys(groupedConcepts).sort((a, b) => {
+    const orderA = SECTION_METADATA[a]?.order ?? 99;
+    const orderB = SECTION_METADATA[b]?.order ?? 99;
+    return orderA - orderB;
+});
+---
+
+<BaseLayout
+    title="Curriculum | How The Web Works"
+    description="Complete roadmap of web concepts."
+>
+    <div class="max-w-[var(--spacing-container)] mx-auto px-6 py-20">
+        <header class="mb-20">
+            <h1
+                class="font-serif text-5xl md:text-7xl font-bold tracking-tighter mb-6 relative inline-block"
+            >
+                Curriculum
+                <span class="absolute -bottom-2 left-0 w-full h-1 bg-black"
+                ></span>
+            </h1>
+            <p
+                class="font-mono text-sm max-w-xl leading-relaxed text-black/60 uppercase tracking-wide"
+            >
+                A structured path from syntax to mental models.
+            </p>
+        </header>
+
+        <div class="space-y-32">
+            {
+                sortedCategories.map((category) => (
+                    <section>
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-12 mb-12 border-b border-black pb-4">
+                            <h2 class="font-mono text-xl font-bold uppercase tracking-widest shrink-0">
+                                {category}
+                            </h2>
+                            {SECTION_METADATA[category]?.description && (
+                                <p class="font-serif text-lg text-black/60 italic">
+                                    {SECTION_METADATA[category].description}
+                                </p>
+                            )}
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                            {groupedConcepts[category].map((concept) => (
+                                <a
+                                    href={`/concepts/${concept.slug}`}
+                                    class="group block"
+                                >
+                                    <article>
+                                        <h3 class="font-serif text-3xl font-bold mb-3 group-hover:text-black/60 transition-colors">
+                                            {concept.data.title}
+                                        </h3>
+                                        <p class="font-sans text-base leading-relaxed text-black/70 mb-4 line-clamp-3">
+                                            {concept.data.description}
+                                        </p>
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-mono text-xs font-bold uppercase tracking-widest border-b border-black pb-0.5 group-hover:border-transparent transition-colors">
+                                                Read Concept
+                                            </span>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="16"
+                                                height="16"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                class="transform transition-transform group-hover:translate-x-1"
+                                            >
+                                                <line
+                                                    x1="5"
+                                                    y1="12"
+                                                    x2="19"
+                                                    y2="12"
+                                                />
+                                                <polyline points="12 5 19 12 12 19" />
+                                            </svg>
+                                        </div>
+                                    </article>
+                                </a>
+                            ))}
+                        </div>
+                    </section>
+                ))
+            }
+        </div>
+    </div>
+</BaseLayout>

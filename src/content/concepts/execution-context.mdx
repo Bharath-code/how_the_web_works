@@ -2,6 +2,7 @@
 title: "Execution Context"
 description: "The environment where your JavaScript code runs."
 category: "JavaScript Fundamentals"
+publishDate: 2023-10-27
 related: ["scope-chain", "hoisting", "what-is-closure"]
 ---
 import Callout from "../../components/mdx/Callout.astro";
@@ -93,12 +94,13 @@ first();
 // "First"
 // "Inside second"
 ```
-</CodeExample>
-
+<div slot="explanation">
 In this example, we have 3 contexts over time:
 1.  **Global**: `name = "Global"`
 2.  **first()**: `name = "First"`
 3.  **second()**: No local variables, just code.
+</div>
+</CodeExample>
 
 ## Common Mistakes
 <Mistakes>

@@ -19,4 +19,35 @@ const { title = "Example", lang = "js" } = Astro.props;
     <div class="[&>pre]:!m-0 [&>pre]:!rounded-none [&>pre]:!bg-transparent">
         <slot />
     </div>
+    {/* Optional explanation slot that appears below the code */}
+    <div class="code-explanation">
+        <slot name="explanation" />
+    </div>
 </div>
+
+<style is:global>
+    /* Styling for the explanation area if content exists */
+    .code-explanation:not(:empty) {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1.5rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #e5e5e5; /* Light text for dark background */
+        background: #252526;
+    }
+
+    .code-explanation strong {
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .code-explanation ol {
+        margin: 0;
+        padding-left: 1.2rem;
+        list-style: decimal;
+    }
+
+    .code-explanation li {
+        margin-bottom: 0.5rem;
+    }
+</style>

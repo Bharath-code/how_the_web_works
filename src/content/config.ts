@@ -6,6 +6,7 @@ const concepts = defineCollection({
         title: z.string(),
         description: z.string(),
         category: z.string().optional(),
+        publishDate: z.date().optional(), // New field for sorting
         related: z.array(z.string()).optional(), // List of slugs
     }),
 });
