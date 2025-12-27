@@ -8,10 +8,13 @@ import type { CollectionEntry } from "astro:content";
 import Callout from "../components/mdx/Callout.astro";
 import Diagram from "../components/Diagram.astro";
 
+import TTSPlayer from "../components/TTSPlayer.astro";
+
 interface Props {
     entry?: CollectionEntry<"concepts">;
     title: string;
     description: string;
+    minutesRead?: number;
     frontmatter?: {
         title: string;
         description: string;
@@ -19,9 +22,12 @@ interface Props {
     };
 }
 
-const { title, description, frontmatter, entry } = Astro.props;
+const { title, description, frontmatter, entry, minutesRead } = Astro.props;
 const pageTitle = frontmatter?.title || title;
 const pageDesc = frontmatter?.description || description;
+
+// Format reading time
+const readingTime = minutesRead ? Math.ceil(minutesRead) : 5; // Default fallback
 ---
 
 <BaseLayout title={pageTitle} description={pageDesc}>
@@ -30,6 +36,7 @@ const pageDesc = frontmatter?.description || description;
         description={pageDesc}
         datePublished={frontmatter?.pubDate}
     />
+    <TTSPlayer />
     <article
         class="prose prose-lg prose-neutral max-w-[68ch] mx-auto
                prose-headings:font-serif prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-black
@@ -43,11 +50,31 @@ const pageDesc = frontmatter?.description || description;
                mb-32"
     >
         <header class="mb-20 not-prose border-b border-black/10 pb-12">
-            <p
-                class="font-mono text-sm uppercase tracking-widest text-accent mb-6 font-bold"
-            >
-                {entry?.data.category || "Concept"}
-            </p>
+            <div class="flex items-center justify-between mb-6">
+                <p
+                    class="font-mono text-sm uppercase tracking-widest text-accent font-bold"
+                >
+                    {entry?.data.category || "Concept"}
+                </p>
+                <div
+                    class="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-black/40"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        ><circle cx="12" cy="12" r="10"></circle><polyline
+                            points="12 6 12 12 16 14"></polyline></svg
+                    >
+                    <span>{readingTime} min read</span>
+                </div>
+            </div>
             <h1
                 class="text-5xl md:text-7xl font-serif font-bold mb-8 text-balance tracking-tighter leading-[1.1]"
             >

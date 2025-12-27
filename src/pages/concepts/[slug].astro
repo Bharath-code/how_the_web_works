@@ -30,7 +30,7 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, remarkPluginFrontmatter } = await entry.render();
 ---
 
 <ConceptLayout
@@ -38,6 +38,7 @@ const { Content } = await entry.render();
     description={entry.data.description}
     frontmatter={entry.data}
     entry={entry}
+    minutesRead={remarkPluginFrontmatter?.minutesRead}
 >
     <Content
         components={{
