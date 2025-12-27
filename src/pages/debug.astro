@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const concepts = await getCollection("concepts");
+---
+
+<BaseLayout title="Debug" description="Debugging content">
+    <div class="p-12 font-mono">
+        <h1 class="text-3xl font-bold mb-8">Debug Content</h1>
+        <ul class="space-y-8">
+            {
+                concepts.map((c) => (
+                    <li class="border p-4 rounded">
+                        <p>
+                            <strong>Title:</strong> {c.data.title}
+                        </p>
+                        <p>
+                            <strong>Slug:</strong> {c.slug}
+                        </p>
+                        <p>
+                            <strong>Category:</strong>{" "}
+                            {c.data.category || "undefined"}
+                        </p>
+                        <p>
+                            <strong>Related:</strong>{" "}
+                            {JSON.stringify(c.data.related) || "undefined"}
+                        </p>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</BaseLayout>

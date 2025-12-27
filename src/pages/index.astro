@@ -1,0 +1,126 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const concepts = (await getCollection("concepts")).filter(
+	(c) => !c.slug.startsWith("_"),
+);
+
+import { SECTION_METADATA } from "../consts";
+
+// 1. Group concepts by category
+const conceptsByCategory = concepts.reduce(
+	(acc, concept) => {
+		const category = concept.data.category || "Uncategorized";
+		if (!acc[category]) acc[category] = [];
+		acc[category].push(concept);
+		return acc;
+	},
+	{} as Record<string, typeof concepts>,
+);
+
+// 2. Generate sections array dynamically
+const sections = Object.entries(conceptsByCategory)
+	.map(([category, items]) => {
+		const metadata =
+			SECTION_METADATA[category] || SECTION_METADATA["Uncategorized"];
+		return {
+			title: category,
+			concepts: items,
+			description: metadata.description,
+			order: metadata.order,
+		};
+	})
+	.sort((a, b) => a.order - b.order);
+---
+
+<BaseLayout
+	title="How the Web Works"
+	description="The clearest explanations of web concepts on the internet."
+>
+	<section class="mb-32 pt-20 grid grid-cols-12 gap-6">
+		<div class="col-span-12 md:col-span-8 md:col-start-1 z-10">
+			<h1
+				class="text-7xl md:text-9xl font-serif font-bold tracking-tighter mb-8 text-balance animate-reveal relative"
+			>
+				Explain Like <br />
+				<span class="italic font-light text-black/90"
+					>I'm a Developer</span
+				>
+				<svg
+					class="absolute -right-12 -top-12 w-32 h-32 text-accent opacity-20 rotate-12"
+					viewBox="0 0 100 100"
+					fill="currentColor"
+				>
+					<circle cx="50" cy="50" r="40"></circle>
+				</svg>
+			</h1>
+		</div>
+
+		<div
+			class="col-span-12 md:col-span-5 md:col-start-2 animate-reveal delay-100"
+		>
+			<p
+				class="text-xl md:text-2xl leading-relaxed text-black/80 text-balance border-l-4 border-accent pl-6 py-2"
+			>
+				One concept. One page. The clearest, most visual explanations of
+				web fundamentals you'll ever find.
+			</p>
+		</div>
+	</section>
+
+	<div class="grid grid-cols-1 md:grid-cols-12 gap-y-24 md:gap-x-12 mb-32">
+		<div class="col-span-1 md:col-span-3 pt-4 border-t border-black">
+			<h2
+				class="text-sm font-mono font-bold uppercase tracking-widest text-black/50 sticky top-24"
+			>
+				Curriculum
+			</h2>
+		</div>
+
+		<div class="col-span-1 md:col-span-9">
+			<div class="space-y-32">
+				{
+					sections.map((section) => (
+						<section>
+							<div class="grid grid-cols-1 md:grid-cols-12 gap-y-8 md:gap-x-12 mb-16 border-b border-black/10 pb-4">
+								<div class="col-span-1 md:col-span-3">
+									<h2 class="text-sm font-mono font-bold uppercase tracking-widest text-black/50 sticky top-24">
+										{section.title}
+									</h2>
+								</div>
+								<div class="col-span-1 md:col-span-9">
+									<p class="text-xl text-black/60">
+										{section.description}
+									</p>
+								</div>
+							</div>
+							<div class="space-y-12">
+								{section.concepts.map((concept, index) => (
+									<a
+										href={`/concepts/${concept.slug}`}
+										class="group block border-t border-black/10 hover:border-black transition-colors duration-500 py-12 animate-reveal"
+										style={`animation-delay: ${index * 100}ms`}
+									>
+										<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-baseline">
+											<div class="col-span-1 md:col-span-8">
+												<h3 class="text-4xl md:text-5xl font-serif font-bold mb-4 group-hover:translate-x-4 transition-transform duration-500 ease-out-expo">
+													{concept.data.title}
+												</h3>
+											</div>
+											<div class="col-span-1 md:col-span-4 text-right md:text-left">
+												<span class="text-lg text-black/60 font-sans group-hover:text-black transition-colors">
+													{concept.data.description}
+												</span>
+											</div>
+										</div>
+									</a>
+								))}
+							</div>
+						</section>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</BaseLayout>

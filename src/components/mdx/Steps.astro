@@ -1,0 +1,62 @@
+---
+
+---
+
+<div class="my-12 counter-reset-step">
+    <div class="space-y-8">
+        <slot />
+    </div>
+</div>
+
+<style is:global>
+    .counter-reset-step {
+        counter-reset: step-counter;
+    }
+
+    /* Target the direct OL inside the component */
+    .counter-reset-step > div > ol {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Target the list items */
+    .counter-reset-step > div > ol > li {
+        counter-increment: step-counter;
+        position: relative;
+        padding-left: 3rem;
+        margin-bottom: 2rem;
+    }
+
+    .counter-reset-step > div > ol > li::before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid #111;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: monospace;
+        font-weight: bold;
+        font-size: 0.875rem;
+        background: #fff;
+        color: #111;
+        z-index: 10;
+    }
+
+    /* Connect the dots line (optional but nice) */
+    .counter-reset-step > div > ol > li:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        left: 1rem;
+        top: 2rem;
+        bottom: -2rem; /* Extend to next item */
+        width: 1px;
+        background-color: #e5e5e5;
+        z-index: 0;
+    }
+</style>

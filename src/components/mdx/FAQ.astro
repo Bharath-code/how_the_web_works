@@ -1,0 +1,55 @@
+---
+
+---
+
+<div class="my-12 faq-wrapper">
+    <div class="mb-8 flex items-center gap-4">
+        <div class="h-px bg-black/10 flex-1"></div>
+        <span
+            class="font-mono text-sm font-bold uppercase tracking-widest text-black/40"
+            >FAQ</span
+        >
+        <div class="h-px bg-black/10 flex-1"></div>
+    </div>
+    <div class="space-y-6">
+        <slot />
+    </div>
+</div>
+
+<style is:global>
+    /* Reset main list */
+    .faq-wrapper > div > ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Styling Question Items (Top level LI) */
+    .faq-wrapper > div > ul > li {
+        margin-bottom: 2rem;
+    }
+
+    /* Make the Question Part (Text directly in LI usually, or before the nested UL) bold */
+    .faq-wrapper > div > ul > li > strong {
+        display: block;
+        font-family: serif;
+        font-size: 1.25rem;
+        color: #111;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Reset Nested UL (Answer) */
+    .faq-wrapper > div > ul > li > ul {
+        list-style: none;
+        padding: 0; /* Remove indent */
+        margin: 0;
+    }
+
+    /* Styling Answer Items */
+    .faq-wrapper > div > ul > li > ul > li {
+        color: #444; /* Slightly lighter text for answer */
+        line-height: 1.7;
+        padding-left: 1rem;
+        border-left: 2px solid #eee;
+    }
+</style>

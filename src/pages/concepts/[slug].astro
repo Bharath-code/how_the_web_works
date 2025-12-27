@@ -1,0 +1,54 @@
+---
+import { getCollection } from "astro:content";
+import ConceptLayout from "../../layouts/ConceptLayout.astro";
+import Callout from "../../components/mdx/Callout.astro";
+import Diagram from "../../components/Diagram.astro";
+import ShortAnswer from "../../components/mdx/ShortAnswer.astro";
+import MentalModel from "../../components/mdx/MentalModel.astro";
+import WhyItExists from "../../components/mdx/WhyItExists.astro";
+import CodeExample from "../../components/mdx/CodeExample.astro";
+import Mistakes from "../../components/mdx/Mistakes.astro";
+import MistakeItem from "../../components/mdx/MistakeItem.astro";
+import Steps from "../../components/mdx/Steps.astro";
+import Checklist from "../../components/mdx/Checklist.astro";
+import FAQ from "../../components/mdx/FAQ.astro";
+import Summary from "../../components/mdx/Summary.astro";
+
+import type { CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+    const concepts = await getCollection("concepts");
+    const filteredConcepts = concepts.filter((c) => !c.slug.startsWith("_"));
+    return filteredConcepts.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+interface Props {
+    entry: CollectionEntry<"concepts">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<ConceptLayout
+    title={entry.data.title}
+    description={entry.data.description}
+    frontmatter={entry.data}
+    entry={entry}
+>
+    <Content
+        components={{
+            Callout,
+            Diagram,
+            ShortAnswer,
+            MentalModel,
+            Steps,
+            Checklist,
+            FAQ,
+            Summary,
+        }}
+    />
+</ConceptLayout>

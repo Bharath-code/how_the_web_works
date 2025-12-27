@@ -1,0 +1,133 @@
+---
+title: "Execution Context"
+description: "The environment where your JavaScript code runs."
+category: "JavaScript Fundamentals"
+related: ["scope-chain", "hoisting", "what-is-closure"]
+---
+import Callout from "../../components/mdx/Callout.astro";
+import Diagram from "../../components/Diagram.astro";
+import ShortAnswer from "../../components/mdx/ShortAnswer.astro";
+import MentalModel from "../../components/mdx/MentalModel.astro";
+
+import WhyItExists from "../../components/mdx/WhyItExists.astro";
+import CodeExample from "../../components/mdx/CodeExample.astro";
+import Mistakes from "../../components/mdx/Mistakes.astro";
+import MistakeItem from "../../components/mdx/MistakeItem.astro";
+
+## Short Answer
+<ShortAnswer>
+  **Execution Context** is the wrapper that stores the variables, function arguments, and the value of `this` for the code currently running. Think of it as a **container** that holds everything needed to execute a piece of code.
+</ShortAnswer>
+
+<Callout type="tip" title="Quick Summary">
+  If you only remember one thing: **Execution Context is the "environment"** your code lives in. It decides what data your code has access to right now.
+</Callout>
+
+## Why This Exists
+<WhyItExists>
+  <div slot="pain">
+  JavaScript is single-threaded. To manage multiple function calls, the engine needs a way to track:
+  1.  **Where we are** in the code (Control Flow).
+  2.  **What data is accessible** (Variables & Scope).
+  3.  **What `this` refers to** (Context).
+  </div>
+  <div slot="solution">
+  Without Execution Contexts, the engine wouldn't know which `name` variable you're talking about when functions are nested, or where to return to when a function finishes.
+  </div>
+</WhyItExists>
+
+## Core Mental Model
+<MentalModel>
+  Think of a **Stack of Plates** (The Call Stack).
+
+  *   **The Plate**: Each plate is an **Execution Context**.
+  *   **Global Context**: The bottom plate. It's always there (created when the browser loads the script).
+  *   **Function Context**: Every time you invoke a function, a new plate is added on top.
+  *   **Popping**: When the function finishes, the plate is removed, and we go back to the context below it.
+
+  > "The context is the stage; the code is the actor."
+</MentalModel>
+
+import Steps from "../../components/mdx/Steps.astro";
+import Checklist from "../../components/mdx/Checklist.astro";
+import FAQ from "../../components/mdx/FAQ.astro";
+import Summary from "../../components/mdx/Summary.astro";
+
+## Step-by-Step Execution
+<Steps>
+1.  **Creation Phase**: The engine parses the code.
+    *   Creates the **Global Object** (`window` in browsers).
+    *   Creates the `this` binding.
+    *   **Hoisting**: Sets up memory for variables (`undefined`) and functions (reference).
+2.  **Execution Phase**: The engine runs your code line-by-line.
+    *   Assigns values to variables.
+    *   Invokes functions (creating new Execution Contexts).
+</Steps>
+
+## Visual Diagrams
+<Diagram caption="The Call Stack growing and shrinking.">
+  {/* TODO: Actual SVG */}
+  <svg viewBox="0 0 100 100" class="w-full h-full text-gray-200">
+    <rect width="100" height="100" fill="currentColor" />
+    <text x="50" y="50" text-anchor="middle" fill="gray">Diagram Placeholder</text>
+  </svg>
+</Diagram>
+
+## Code Examples
+<CodeExample title="Context Stack" lang="js">
+```javascript
+const name = "Global"; // Global Context
+
+function first() {
+  const name = "First"; // Function Context (first)
+  console.log(name);
+  second();
+}
+
+function second() {
+  console.log("Inside second"); // Function Context (second)
+}
+
+first(); 
+// Output:
+// "First"
+// "Inside second"
+```
+</CodeExample>
+
+In this example, we have 3 contexts over time:
+1.  **Global**: `name = "Global"`
+2.  **first()**: `name = "First"`
+3.  **second()**: No local variables, just code.
+
+## Common Mistakes
+<Mistakes>
+  <MistakeItem>
+    <div slot="mistake">Thinking "Context" and "Scope" are the same.</div>
+    <div slot="fix">**Scope** is about *visibility* (can I see this variable?). **Context** is about *environment* (what is the value of `this`? where was I called?).</div>
+  </MistakeItem>
+  <MistakeItem>
+    <div slot="mistake">Losing `this` context in callbacks.</div>
+    <div slot="fix">Use arrow functions or `.bind()` because `this` is determined by *how* a function is called, which is part of its Execution Context.</div>
+  </MistakeItem>
+</Mistakes>
+
+## Practical Checklist
+<Checklist>
+*   [ ] Remember that `this` is determined at execution time (runtime), not write time.
+*   [ ] Be aware that every function call creates a new context (performance implication for deep recursion).
+*   [ ] Use the Call Stack in your browser debugger to see the active Execution Contexts.
+</Checklist>
+
+## FAQ
+<FAQ>
+*   **Q: Does an arrow function create its own Execution Context?**
+    *   A: Yes, it creates a context for variables, *however*, it does not define its own `this` keyword (it uses the enclosing context's `this`).
+*   **Q: What happens to the context when a function returns?**
+    *   A: It is destroyed (popped off the stack), and its local variables are garbage collected (unless a Closure keeps them alive!).
+</FAQ>
+
+## Summary
+<Summary>
+Execution Context is the fundamental engine mechanism that tracks *where* you are and *what* you can access. It has two phases: **Creation** (hoisting) and **Execution** (running code). Mastering this explains why `this` behaves the way it does and how stack traces work.
+</Summary>

@@ -1,0 +1,94 @@
+---
+title: "Concept Title"
+description: "A one-sentence hook explaining what this is."
+category: "Basics"
+related: []
+---
+
+import ShortAnswer from "../../components/mdx/ShortAnswer.astro";
+import MentalModel from "../../components/mdx/MentalModel.astro";
+
+## 2. Short Answer
+<ShortAnswer>
+  **[Concept Name]** is [definition]. It exists because [primary problem it solves].
+</ShortAnswer>
+
+<Callout type="tip" title="Quick Summary">
+  If you only remember one thing: [Core takeaway].
+</Callout>
+
+import WhyItExists from "../../components/mdx/WhyItExists.astro";
+import CodeExample from "../../components/mdx/CodeExample.astro";
+import Mistakes from "../../components/mdx/Mistakes.astro";
+import MistakeItem from "../../components/mdx/MistakeItem.astro";
+
+## 3. Why This Exists
+<WhyItExists>
+  <div slot="pain">
+  Before [Concept], developers had to [painful alternative].
+  1.  **Problem A**: [Description]
+  2.  **Problem B**: [Description]
+  </div>
+  <div slot="solution">
+  [Concept] solves this by [solution].
+  </div>
+</WhyItExists>
+
+## 4. Core Mental Model
+<MentalModel>
+  Think of **[Analogy]**.
+  *   **[Component A]**: Represents [Concept Part A].
+  *   **[Component B]**: Represents [Concept Part B].
+
+  > [A powerful quote or summary of the mental model].
+</MentalModel>
+
+import Steps from "../../components/mdx/Steps.astro";
+import Checklist from "../../components/mdx/Checklist.astro";
+import FAQ from "../../components/mdx/FAQ.astro";
+import Summary from "../../components/mdx/Summary.astro";
+
+## 5. Step-by-Step Execution
+<Steps>
+1.  **Step 1**: [Explanation]
+2.  **Step 2**: [Explanation]
+3.  **Step 3**: [Explanation]
+</Steps>
+
+## 6. Visual Diagrams
+> [Placeholder for Diagram]
+
+## 7. Code Examples
+<CodeExample title="Demo" lang="js">
+```javascript
+// Example
+```
+</CodeExample>
+
+## 8. Common Mistakes
+<Mistakes>
+  <MistakeItem>
+    <div slot="mistake">[Description of mistake]</div>
+    <div slot="fix">[Description of fix]</div>
+  </MistakeItem>
+</Mistakes>
+
+## 9. Practical Checklist
+<Checklist>
+*   [ ] Use when [Scenario A].
+*   [ ] Avoid when [Scenario B].
+*   [ ] Remember to [Best Practice].
+</Checklist>
+
+## 10. FAQ
+<FAQ>
+*   **Q: [Common Question]?**
+    *   A: [Answer]
+*   **Q: [Another Question]?**
+    *   A: [Answer]
+</FAQ>
+
+## 11. Summary
+<Summary>
+  [A final 1-2 sentence wrap-up reinforcing the main value proposition.]
+</Summary>

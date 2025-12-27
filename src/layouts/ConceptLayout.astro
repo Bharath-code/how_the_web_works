@@ -1,0 +1,73 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Schema from "../components/Schema.astro";
+import RelatedConcepts from "../components/RelatedConcepts.astro";
+import type { CollectionEntry } from "astro:content";
+
+// MDX Components
+import Callout from "../components/mdx/Callout.astro";
+import Diagram from "../components/Diagram.astro";
+
+interface Props {
+    entry?: CollectionEntry<"concepts">;
+    title: string;
+    description: string;
+    frontmatter?: {
+        title: string;
+        description: string;
+        pubDate?: string;
+    };
+}
+
+const { title, description, frontmatter, entry } = Astro.props;
+const pageTitle = frontmatter?.title || title;
+const pageDesc = frontmatter?.description || description;
+---
+
+<BaseLayout title={pageTitle} description={pageDesc}>
+    <Schema
+        title={pageTitle}
+        description={pageDesc}
+        datePublished={frontmatter?.pubDate}
+    />
+    <article
+        class="prose prose-lg prose-neutral max-w-[68ch] mx-auto
+               prose-headings:font-serif prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-black
+               prose-h2:text-3xl prose-h2:mt-20 prose-h2:mb-8
+               prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-6
+               prose-p:leading-[1.8] prose-p:text-black/85 prose-p:mb-8
+               prose-li:text-black/85 prose-li:leading-relaxed prose-li:my-2
+               prose-strong:font-bold prose-strong:text-black
+               prose-blockquote:border-l-4 prose-blockquote:border-accent prose-blockquote:bg-accent/5 prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:font-medium
+               prose-code:font-mono prose-code:text-accent prose-code:bg-accent/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
+               mb-32"
+    >
+        <header class="mb-20 not-prose border-b border-black/10 pb-12">
+            <p
+                class="font-mono text-sm uppercase tracking-widest text-accent mb-6 font-bold"
+            >
+                {entry?.data.category || "Concept"}
+            </p>
+            <h1
+                class="text-5xl md:text-7xl font-serif font-bold mb-8 text-balance tracking-tighter leading-[1.1]"
+            >
+                {pageTitle}
+            </h1>
+            <p
+                class="text-xl md:text-2xl text-black/60 text-balance leading-relaxed max-w-[45ch]"
+            >
+                {pageDesc}
+            </p>
+        </header>
+        <slot />
+        {
+            entry && (
+                <RelatedConcepts
+                    currentSlug={entry.slug}
+                    category={entry.data.category}
+                    relatedSlugs={entry.data.related}
+                />
+            )
+        }
+    </article>
+</BaseLayout>

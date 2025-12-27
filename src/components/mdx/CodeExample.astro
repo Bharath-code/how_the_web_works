@@ -1,0 +1,22 @@
+---
+interface Props {
+    title?: string;
+    lang?: string;
+}
+
+const { title = "Example", lang = "js" } = Astro.props;
+---
+
+<div
+    class="my-10 rounded-lg overflow-hidden border border-black/10 shadow-sm bg-[#1e1e1e]"
+>
+    <div
+        class="flex items-center justify-between px-4 py-2 bg-[#252526] border-b border-white/5"
+    >
+        <span class="text-xs font-mono text-white/50">{title}</span>
+        <span class="text-xs font-mono text-white/30 uppercase">{lang}</span>
+    </div>
+    <div class="[&>pre]:!m-0 [&>pre]:!rounded-none [&>pre]:!bg-transparent">
+        <slot />
+    </div>
+</div>

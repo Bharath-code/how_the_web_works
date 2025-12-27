@@ -1,0 +1,32 @@
+---
+interface Props {
+    title: string;
+    description: string;
+    datePublished?: string;
+    image?: string;
+}
+
+const {
+    title,
+    description,
+    datePublished = new Date().toISOString(),
+    image,
+} = Astro.props;
+
+const schema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: title,
+    description: description,
+    image: image ? new URL(image, Astro.url) : undefined,
+    author: {
+        "@type": "Organization",
+        name: "How the Web Works",
+        url: Astro.site,
+    },
+    datePublished: datePublished,
+    dateModified: new Date().toISOString(), // In a real app, this would come from git or frontmatter
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

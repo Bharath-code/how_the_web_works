@@ -1,0 +1,53 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+
+interface Props {
+    currentSlug: string;
+    category?: string;
+    relatedSlugs?: string[];
+}
+
+const { currentSlug, category, relatedSlugs } = Astro.props;
+
+const allConcepts = (await getCollection("concepts")).filter(
+    (c) => !c.slug.startsWith("_"),
+);
+
+// Strategy 1: Explicit 'related' links
+// Strategy 2: Same category
+let relatedConcepts: CollectionEntry<"concepts">[] = [];
+
+if (relatedSlugs && relatedSlugs.length > 0) {
+    relatedConcepts = allConcepts.filter((c) => relatedSlugs.includes(c.slug));
+} else if (category) {
+    relatedConcepts = allConcepts
+        .filter((c) => c.data.category === category && c.slug !== currentSlug)
+        .slice(0, 4);
+}
+---
+
+{
+    relatedConcepts.length > 0 && (
+        <aside class="mt-24 pt-12 border-t-2 border-black/5">
+            <h3 class="font-serif text-2xl font-bold mb-8">
+                Deepen Your Understanding in{" "}
+                <span class="text-accent">{category || "Related Topics"}</span>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {relatedConcepts.map((post) => (
+                    <a
+                        href={`/concepts/${post.slug}`}
+                        class="group block p-6 border border-black/5 hover:border-black transition-colors duration-300"
+                    >
+                        <h4 class="font-serif text-xl font-bold mb-2 group-hover:text-accent transition-colors">
+                            {post.data.title}
+                        </h4>
+                        <p class="text-sm text-black/60 font-sans">
+                            {post.data.description}
+                        </p>
+                    </a>
+                ))}
+            </div>
+        </aside>
+    )
+}

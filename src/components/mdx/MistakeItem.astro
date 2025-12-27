@@ -1,0 +1,22 @@
+---
+
+---
+
+<div
+    class="grid grid-cols-1 md:grid-cols-2 gap-4 border-l-2 border-black/10 pl-4 py-1"
+>
+    <div class="text-red-600/80 font-medium">
+        <span
+            class="block text-xs font-mono font-bold uppercase text-red-400 mb-1"
+            >Mistake</span
+        >
+        <slot name="mistake" />
+    </div>
+    <div class="text-green-700/80 font-medium">
+        <span
+            class="block text-xs font-mono font-bold uppercase text-green-500 mb-1"
+            >Fix</span
+        >
+        <slot name="fix" />
+    </div>
+</div>

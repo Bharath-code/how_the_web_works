@@ -1,0 +1,26 @@
+---
+
+---
+
+<div class="my-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-red-50 p-6 rounded-lg border border-red-100">
+        <h4
+            class="text-xs font-mono font-bold uppercase tracking-widest text-red-600 mb-4"
+        >
+            The Pain
+        </h4>
+        <div class="prose prose-sm prose-red">
+            <slot name="pain" />
+        </div>
+    </div>
+    <div class="bg-green-50 p-6 rounded-lg border border-green-100">
+        <h4
+            class="text-xs font-mono font-bold uppercase tracking-widest text-green-700 mb-4"
+        >
+            The Solution
+        </h4>
+        <div class="prose prose-sm prose-green">
+            <slot name="solution" />
+        </div>
+    </div>
+</div>

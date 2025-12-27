@@ -1,0 +1,36 @@
+---
+const links = [
+    { href: "/concepts", text: "Curriculum" },
+    { href: "/about", text: "About" },
+];
+---
+
+<nav class="w-full py-8">
+    <div
+        class="max-w-[var(--spacing-container)] mx-auto px-6 flex justify-between items-baseline"
+    >
+        <a
+            href="/"
+            class="font-serif font-bold text-2xl tracking-tighter hover:opacity-50 transition-opacity"
+        >
+            HTWW
+        </a>
+        <ul
+            class="flex gap-12 text-sm font-mono uppercase tracking-widest text-black/60"
+        >
+            {
+                links.map((link) => (
+                    <li>
+                        <a
+                            href={link.href}
+                            class="hover:text-black transition-colors relative group"
+                        >
+                            {link.text}
+                            <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-black transition-all duration-300 group-hover:w-full" />
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</nav>
