@@ -1,4 +1,6 @@
 ---
+import Search from "./Search.astro";
+
 const links = [
     { href: "/curriculum", text: "Curriculum" },
     { href: "/about", text: "About" },
@@ -31,6 +33,9 @@ const links = [
                     </li>
                 ))
             }
+            <li>
+                <Search />
+            </li>
         </ul>
     </div>
 </nav>

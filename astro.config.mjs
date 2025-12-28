@@ -5,6 +5,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import readingTime from 'reading-time';
 import { toString } from 'mdast-util-to-string';
+import pagefind from "astro-pagefind";
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,10 +14,14 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap(),
+    pagefind(),
   ],
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ["@pagefind/default-ui"],
+    },
   },
 
   markdown: {
